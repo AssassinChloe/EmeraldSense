@@ -1,25 +1,27 @@
-#pragma once
+#ifndef GAMEOBJECT_HPP
+#define GAMEOBJECT_HPP
 #include "SDL_image.h"
+#include "Game.hpp"
 #include<iostream>
 
-class Entity
+
+class GameObject
 {
 public:
-    Entity();
-    Entity(int posx, int posy, const char *fileName, SDL_Renderer *ren);
+    GameObject();
+    GameObject(int posx, int posy, const char *fileName);
 
-    Entity& operator()(int posx, int posy, const char* fileName, SDL_Renderer* ren);
     SDL_Texture* getTex() const ;
     int getSpritesNb() const;
 
     void updatePos(int dirx, int diry, int speed);
     void render();
     int animateSprite();
-    ~Entity();
+    ~GameObject();
 
 private:
     SDL_Rect _currentFrame, _dst;
     SDL_Texture* _tex;
-    SDL_Renderer *_renderer;
     int _spritesNb;
 };
+#endif

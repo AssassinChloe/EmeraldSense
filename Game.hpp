@@ -1,9 +1,16 @@
-#pragma once
+#ifndef GAME_HPP
+#define GAME_HPP
 
 #include "SDL.h"
 #include "SDL_image.h"
-#include "Entity.hpp"
+#include "GameObject.hpp"
 #include <iostream>
+#include "Map.hpp"
+#include "ECS.hpp"
+#include "PositionComponent.hpp"
+
+class GameObject;
+class Map;
 
 class Game {
 public:
@@ -21,11 +28,13 @@ public:
 	void clean();
 
 	bool running();
+	static SDL_Renderer *renderer;
 
 private:
 	bool isRunning;
-	SDL_Window *window;
-	SDL_Renderer *renderer;
-	Entity player;
+	SDL_Window* window;
+	GameObject *player;
 	int _up, _down, _left, _right;
+	Map *map;
 };
+#endif

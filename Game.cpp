@@ -1,11 +1,16 @@
 #include "Game.hpp"
 
+SDL_Renderer* Game::renderer = NULL;
+
+Manager manager;
+auto& newPlayer(manager.addEntity());
+
 Game::Game()
 {
 	this->isRunning = false;
 	this->window = NULL; 
-	this->renderer = NULL;
-	this->player = Entity();
+	this->player = NULL;
+	this->map = NULL;
 	_up = 0;
 	_down = 0;
 	_left = 0;
@@ -26,7 +31,6 @@ void Game::init(const char* title, int xpos, int ypos, int width, int height, bo
 	}
 	if (SDL_Init(SDL_INIT_EVERYTHING) == 0)
 	{
-
 		std::cout << "Subsystem Initialised!" << std::endl;
 		this->window = SDL_CreateWindow(title, xpos, ypos, width, height, flags);
 		if (this->window)
@@ -46,8 +50,11 @@ void Game::init(const char* title, int xpos, int ypos, int width, int height, bo
 		}
 		else
 		{
-			this->player(50,50, "assets/renard.png", this->renderer);
+			this->player = new GameObject(50, 50, "assets/renard.png");
 			std::cout << "Player Created " << std::endl;
+			this->map = new Map();
+			newPlayer.addComponent<PositionComponent>();
+			newPlayer.getComponent<PositionComponent>().setPos(60, 60);
 		}
 	}
 }
@@ -75,10 +82,9 @@ void Game::doKeyDown(SDL_KeyboardEvent* event)
 {
 	if (event->repeat == 0)
 	{
-		std::cout << "key press" << std::endl;
-
 		if (event->keysym.scancode == SDL_SCANCODE_UP
-			|| event->keysym.scancode == SDL_SCANCODE_Z)
+			|| event->keysym.scancode == SDL_SCANCODE_Z
+			|| event->keysym.scancode == SDL_SCANCODE_W)
 		{
 			_up = 1;
 		}
@@ -90,7 +96,8 @@ void Game::doKeyDown(SDL_KeyboardEvent* event)
 		}
 
 		if (event->keysym.scancode == SDL_SCANCODE_LEFT
-			|| event->keysym.scancode == SDL_SCANCODE_Q)
+			|| event->keysym.scancode == SDL_SCANCODE_Q
+			|| event->keysym.scancode == SDL_SCANCODE_A)
 		{
 			_left = 1;
 		}
@@ -107,10 +114,9 @@ void Game::doKeyUp(SDL_KeyboardEvent* event)
 {
 	if (event->repeat == 0)
 	{
-			std::cout << "key release" << std::endl;
-
 		if (event->keysym.scancode == SDL_SCANCODE_UP
-			|| event->keysym.scancode == SDL_SCANCODE_Z)
+			|| event->keysym.scancode == SDL_SCANCODE_Z
+			|| event->keysym.scancode == SDL_SCANCODE_W)
 		{
 			_up = 0;
 		}
@@ -122,7 +128,8 @@ void Game::doKeyUp(SDL_KeyboardEvent* event)
 		}
 
 		if (event->keysym.scancode == SDL_SCANCODE_LEFT
-			|| event->keysym.scancode == SDL_SCANCODE_Q)
+			|| event->keysym.scancode == SDL_SCANCODE_Q
+			|| event->keysym.scancode == SDL_SCANCODE_A)
 		{
 			_left = 0;
 		}
@@ -137,18 +144,21 @@ void Game::doKeyUp(SDL_KeyboardEvent* event)
 
 void Game::update()
 {
-	this->player.updatePos(_right - _left, _down - _up, 1);
+	this->player->updatePos(_right - _left, _down - _up, 1);
 }
 void Game::render()
 {
 	SDL_RenderClear(this->renderer);
-	this->player.render();
+	this->map->drawMap();
+	this->player->render();
 	SDL_RenderPresent(this->renderer);
 }
 void Game::clean()
 {	
 	SDL_DestroyWindow(this->window);
 	SDL_DestroyRenderer(this->renderer);
+	delete(this->player);
+	delete(this->map);
 	SDL_Quit();
 	std::cout << "Game cleaned" << std::endl;
 }
