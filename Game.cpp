@@ -1,0 +1,159 @@
+#include "Game.hpp"
+
+Game::Game()
+{
+	this->isRunning = false;
+	this->window = NULL; 
+	this->renderer = NULL;
+	this->player = Entity();
+	_up = 0;
+	_down = 0;
+	_left = 0;
+	_right = 0;
+}
+
+Game::~Game()
+{
+
+}
+
+void Game::init(const char* title, int xpos, int ypos, int width, int height, bool fullscreen)
+{
+	int flags = SDL_WINDOW_ALLOW_HIGHDPI;
+	if (fullscreen)
+	{
+		flags = SDL_WINDOW_FULLSCREEN;
+	}
+	if (SDL_Init(SDL_INIT_EVERYTHING) == 0)
+	{
+
+		std::cout << "Subsystem Initialised!" << std::endl;
+		this->window = SDL_CreateWindow(title, xpos, ypos, width, height, flags);
+		if (this->window)
+		{
+			std::cout << "Window Created!" << std::endl;
+			this->renderer = SDL_CreateRenderer(this->window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
+			if (this->renderer)
+			{
+				std::cout << "Renderer Created!" << std::endl;
+				SDL_SetRenderDrawColor(this->renderer, 255, 255, 255, 255);
+			}
+		}
+		this->isRunning = true;
+		if (!IMG_Init(IMG_INIT_PNG))
+		{
+			std::cout << "IMG init failed: " << SDL_GetError() << std::endl;
+		}
+		else
+		{
+			this->player(50,50, "assets/renard.png", this->renderer);
+			std::cout << "Player Created " << std::endl;
+		}
+	}
+}
+
+void Game::handleEvents()
+{
+	SDL_Event event;
+	SDL_PollEvent(&event);
+	switch (event.type) {
+		case SDL_QUIT:
+			this->isRunning = false;
+			break;
+		case SDL_KEYDOWN:
+			this->doKeyDown(&event.key);
+			break;
+		case SDL_KEYUP:
+			this->doKeyUp(&event.key);
+			break;
+		default:
+			break;
+	}
+}
+
+void Game::doKeyDown(SDL_KeyboardEvent* event)
+{
+	if (event->repeat == 0)
+	{
+		std::cout << "key press" << std::endl;
+
+		if (event->keysym.scancode == SDL_SCANCODE_UP
+			|| event->keysym.scancode == SDL_SCANCODE_Z)
+		{
+			_up = 1;
+		}
+
+		if (event->keysym.scancode == SDL_SCANCODE_DOWN
+			|| event->keysym.scancode == SDL_SCANCODE_S)
+		{
+			_down = 1;
+		}
+
+		if (event->keysym.scancode == SDL_SCANCODE_LEFT
+			|| event->keysym.scancode == SDL_SCANCODE_Q)
+		{
+			_left = 1;
+		}
+
+		if (event->keysym.scancode == SDL_SCANCODE_RIGHT
+			|| event->keysym.scancode == SDL_SCANCODE_D)
+		{
+			_right = 1;
+		}
+	}
+}
+
+void Game::doKeyUp(SDL_KeyboardEvent* event)
+{
+	if (event->repeat == 0)
+	{
+			std::cout << "key release" << std::endl;
+
+		if (event->keysym.scancode == SDL_SCANCODE_UP
+			|| event->keysym.scancode == SDL_SCANCODE_Z)
+		{
+			_up = 0;
+		}
+
+		if (event->keysym.scancode == SDL_SCANCODE_DOWN
+			|| event->keysym.scancode == SDL_SCANCODE_S)
+		{
+			_down = 0;
+		}
+
+		if (event->keysym.scancode == SDL_SCANCODE_LEFT
+			|| event->keysym.scancode == SDL_SCANCODE_Q)
+		{
+			_left = 0;
+		}
+
+		if (event->keysym.scancode == SDL_SCANCODE_RIGHT
+			|| event->keysym.scancode == SDL_SCANCODE_D)
+		{
+			_right = 0;
+		}
+	}
+}
+
+void Game::update()
+{
+	this->player.updatePos(_right - _left, _down - _up, 1);
+}
+void Game::render()
+{
+	SDL_RenderClear(this->renderer);
+	this->player.render();
+	SDL_RenderPresent(this->renderer);
+}
+void Game::clean()
+{	
+	SDL_DestroyWindow(this->window);
+	SDL_DestroyRenderer(this->renderer);
+	SDL_Quit();
+	std::cout << "Game cleaned" << std::endl;
+}
+
+bool Game::running()
+{
+	return (this->isRunning);
+}
