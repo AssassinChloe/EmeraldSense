@@ -1,15 +1,15 @@
 #include "Game.hpp"
+#include "Components.hpp"
 
 SDL_Renderer* Game::renderer = NULL;
 
 Manager manager;
-auto& newPlayer(manager.addEntity());
+auto& player(manager.addEntity());
 
 Game::Game()
 {
 	this->isRunning = false;
 	this->window = NULL; 
-	this->player = NULL;
 	this->map = NULL;
 	_up = 0;
 	_down = 0;
@@ -50,11 +50,11 @@ void Game::init(const char* title, int xpos, int ypos, int width, int height, bo
 		}
 		else
 		{
-			this->player = new GameObject(50, 50, "assets/renard.png");
-			std::cout << "Player Created " << std::endl;
 			this->map = new Map();
-			newPlayer.addComponent<PositionComponent>();
-			newPlayer.getComponent<PositionComponent>().setPos(60, 60);
+			player.addComponent<PositionComponent>();
+			player.addComponent<DirectionComponent>();
+			player.addComponent<SpriteComponent>("assets/renard.png");
+
 		}
 	}
 }
@@ -144,20 +144,21 @@ void Game::doKeyUp(SDL_KeyboardEvent* event)
 
 void Game::update()
 {
-	this->player->updatePos(_right - _left, _down - _up, 1);
+	manager.refresh();
+	player.getComponent<DirectionComponent>().setDir(_right - _left, _down - _up);
+	manager.update();
 }
 void Game::render()
 {
 	SDL_RenderClear(this->renderer);
 	this->map->drawMap();
-	this->player->render();
+	manager.draw();
 	SDL_RenderPresent(this->renderer);
 }
 void Game::clean()
 {	
 	SDL_DestroyWindow(this->window);
 	SDL_DestroyRenderer(this->renderer);
-	delete(this->player);
 	delete(this->map);
 	SDL_Quit();
 	std::cout << "Game cleaned" << std::endl;

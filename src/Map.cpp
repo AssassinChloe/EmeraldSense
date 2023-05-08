@@ -25,9 +25,11 @@ int lvl1[20][25] = {
 
 Map::Map()
 {
-	this->dirt = IMG_LoadTexture(Game::renderer, "assets/dirt.png");
-	this->water = IMG_LoadTexture(Game::renderer, "assets/water.png");
-	this->grass = IMG_LoadTexture(Game::renderer, "assets/grass.png");
+	this->dirt = TextureManager::loadTexture("assets/dirt.png");
+	this->water = TextureManager::loadTexture("assets/water.png");
+	this->grass = TextureManager::loadTexture("assets/grass.png");
+	if (!dirt || !water || !grass)
+		std::cout << "pb during loading map's tiles" << std::endl;
 
 	loadMap(lvl1);
 	src.x = src.y = dest.x = dest.y = 0;
@@ -36,6 +38,12 @@ Map::Map()
 }
 Map::~Map()
 {
+	if (dirt)
+		SDL_DestroyTexture(dirt);
+	if (water)
+		SDL_DestroyTexture(water);
+	if (grass)
+		SDL_DestroyTexture(grass);
 
 }
 
@@ -64,13 +72,13 @@ void Map::drawMap()
 			switch (type)
 			{
 			case 0:
-				SDL_RenderCopy(Game::renderer, water, &src, &dest);
+				TextureManager::Draw(water, src, dest);
 				break;
 			case 1:
-				SDL_RenderCopy(Game::renderer, grass, &src, &dest);
+				TextureManager::Draw(grass, src, dest);
 				break;
 			case 2:
-				SDL_RenderCopy(Game::renderer, dirt, &src, &dest);
+				TextureManager::Draw(dirt, src, dest);
 				break;
 			}
 		}

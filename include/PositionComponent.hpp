@@ -1,15 +1,21 @@
 #pragma once
-#include "ECS.hpp"
+#include "Components.hpp"
+
 class PositionComponent : public Component
 {
 private:
 	int xpos, ypos;
 
 public:
-	void init() override
+	PositionComponent()
 	{
 		xpos = 0;
 		ypos = 0;
+	}
+	PositionComponent(int x, int y)
+	{
+		xpos = x;
+		ypos = y;
 	}
 
 	int x() { return xpos; }

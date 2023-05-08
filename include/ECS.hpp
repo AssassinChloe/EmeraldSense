@@ -21,7 +21,7 @@ using ComponentID = std::size_t;
 //The getComponentTypeID() and getComponentTypeID<T>() are helper functions that generate unique IDs for different component
 //types, these are used to identify components in the bitset and array.
 
-inline ComponentID getComponentTypeID()
+inline ComponentID getUniqueComponentID() noexcept
 {
 	static ComponentID lastID = 0;
 	return (lastID++);
@@ -29,7 +29,8 @@ inline ComponentID getComponentTypeID()
 
 template <typename T> inline ComponentID getComponentTypeID() noexcept
 {
-	static ComponentID typeID = getComponentTypeID();
+	static_assert (std::is_base_of<Component, T>::value, "");
+	static ComponentID typeID = getUniqueComponentID();
 	return(typeID);
 }
 
@@ -55,10 +56,10 @@ public:
 //an entity has.
 class Entity
 {
-private:
+protected:
 	bool active = true;
-	std::vector<std::unique_ptr<Component>> components;
 
+	std::vector<std::unique_ptr<Component>> components;
 	ComponentArray componentArray;
 	ComponentBitSet componentBitSet;
 
@@ -76,13 +77,13 @@ public:
 
 	//The addComponent<T, TArgs...>() function is used to add a new component of type T to an entity, 
 	//it creates a new instance of T and passing in the arguments, then adds it to the entity's components list.
-	template <typename T, typename... TArgs> T& addComponent(TArgs&&... mArgs)
+	template <typename T, typename... TArgs> 
+	T& addComponent(TArgs&&... mArgs)
 	{
 		T* c(new T(std::forward<TArgs>(mArgs)...));
 		c->entity = this;
 		std::unique_ptr<Component> uPtr{c};
 		components.emplace_back(std::move(uPtr));
-
 		componentArray[getComponentTypeID<T>()] = c;
 		componentBitSet[getComponentTypeID<T>()] = true;
 
@@ -93,7 +94,7 @@ public:
 	//The getComponent<T>() function is used to retrieve a specific component from an entity.
 	template<typename T> T& getComponent() const
 	{
-		auto ptr(componentArray[getComponentTypeID<T>()]);
+		auto ptr = componentArray[getComponentTypeID<T>()];
 		return *static_cast<T*>(ptr);
 	}
 };
@@ -103,7 +104,7 @@ public:
 
 class Manager
 {
-private:
+protected:
 	std::vector<std::unique_ptr<Entity>> entities;
 
 public:

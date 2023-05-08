@@ -71,7 +71,7 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>C:\Users\clotu\Documents\Dev\Lib\SDL2_image\include;$(IncludePath)</IncludePath>
+    <IncludePath>C:\Users\clotu\Documents\Dev\EmeraldSense\include;C:\Users\clotu\Documents\Dev\Lib\SDL2_image\include;$(IncludePath)</IncludePath>
     <LibraryPath>C:\Users\clotu\Documents\Dev\Lib\SDL2_image\lib\x64;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -108,7 +108,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>C:\Users\clotu\Documents\Dev\Lib\SDL2_image\include;C:\Users\clotu\Documents\Dev\Lib\SDL2\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\clotu\Documents\Dev\Lib\SDL2_image\include;C:\Users\clotu\Documents\Dev\EmeraldSense\include;C:\Users\clotu\Documents\Dev\Lib\SDL2\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -134,21 +134,35 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="ECS.cpp" />
-    <ClCompile Include="Game.cpp" />
-    <ClCompile Include="main.cpp" />
-    <ClCompile Include="GameObject.cpp" />
-    <ClCompile Include="Map.cpp" />
-    <ClCompile Include="PositionComponent.cpp" />
-    <ClCompile Include="TextureManager.cpp" />
+    <ClCompile Include="src\Game.cpp" />
+    <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="src\GameObject.cpp" />
+    <ClCompile Include="src\Map.cpp" />
+    <ClCompile Include="src\TextureManager.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="ECS.hpp" />
-    <ClInclude Include="Game.hpp" />
-    <ClInclude Include="GameObject.hpp" />
-    <ClInclude Include="Map.hpp" />
-    <ClInclude Include="PositionComponent.hpp" />
-    <ClInclude Include="TextureManager.hpp" />
+    <ClInclude Include="include\Components.hpp" />
+    <ClInclude Include="include\DirectionComponent.hpp" />
+    <ClInclude Include="include\ECS.hpp" />
+    <ClInclude Include="include\SpriteComponent.hpp" />
+    <ClInclude Include="include\Game.hpp" />
+    <ClInclude Include="include\GameObject.hpp" />
+    <ClInclude Include="include\Map.hpp" />
+    <ClInclude Include="include\PositionComponent.hpp" />
+    <ClInclude Include="include\TextureManager.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include=".gitignore" />
+    <None Include="assets\renard.json" />
+    <None Include="SDL2.dll" />
+    <None Include="SDL2_image.dll" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="assets\dirt.png" />
+    <Image Include="assets\grass.png" />
+    <Image Include="assets\paon.png" />
+    <Image Include="assets\renard.png" />
+    <Image Include="assets\water.png" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

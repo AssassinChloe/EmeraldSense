@@ -48,6 +48,7 @@ void GameObject::render()
     src = this->_currentFrame;
     src.x += (this->_currentFrame.w * this->animateSprite());
     SDL_RenderCopy(Game::renderer, this->_tex, &src, &this->_dst);
+
 }
 
 GameObject::~GameObject()

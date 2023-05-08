@@ -1,15 +1,13 @@
-#ifndef GAME_HPP
-#define GAME_HPP
+#pragma once
 
 #include "SDL.h"
 #include "SDL_image.h"
 #include "GameObject.hpp"
 #include <iostream>
 #include "Map.hpp"
-#include "ECS.hpp"
-#include "PositionComponent.hpp"
+#include "TextureManager.hpp"
 
-class GameObject;
+
 class Map;
 
 class Game {
@@ -33,8 +31,6 @@ public:
 private:
 	bool isRunning;
 	SDL_Window* window;
-	GameObject *player;
 	int _up, _down, _left, _right;
 	Map *map;
 };
-#endif
