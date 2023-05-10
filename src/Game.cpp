@@ -1,8 +1,8 @@
 #include "Game.hpp"
-#include "Components.hpp"
+#include "ECS/Components.hpp"
 
 SDL_Renderer* Game::renderer = NULL;
-
+SDL_Event Game::event;
 Manager manager;
 auto& player(manager.addEntity());
 
@@ -51,9 +51,10 @@ void Game::init(const char* title, int xpos, int ypos, int width, int height, bo
 		else
 		{
 			this->map = new Map();
-			player.addComponent<PositionComponent>();
-			player.addComponent<DirectionComponent>();
-			player.addComponent<SpriteComponent>("assets/renard.png");
+			player.addComponent<TransformComponent>();
+			player.addComponent<AnimatedSpriteComponent>(2, 1);
+			player.addComponent<SpriteComponent>("assets/marchetest.png");
+			player.addComponent<KeyboardController>();
 
 		}
 	}
@@ -61,91 +62,19 @@ void Game::init(const char* title, int xpos, int ypos, int width, int height, bo
 
 void Game::handleEvents()
 {
-	SDL_Event event;
 	SDL_PollEvent(&event);
 	switch (event.type) {
 		case SDL_QUIT:
 			this->isRunning = false;
-			break;
-		case SDL_KEYDOWN:
-			this->doKeyDown(&event.key);
-			break;
-		case SDL_KEYUP:
-			this->doKeyUp(&event.key);
 			break;
 		default:
 			break;
 	}
 }
 
-void Game::doKeyDown(SDL_KeyboardEvent* event)
-{
-	if (event->repeat == 0)
-	{
-		if (event->keysym.scancode == SDL_SCANCODE_UP
-			|| event->keysym.scancode == SDL_SCANCODE_Z
-			|| event->keysym.scancode == SDL_SCANCODE_W)
-		{
-			_up = 1;
-		}
-
-		if (event->keysym.scancode == SDL_SCANCODE_DOWN
-			|| event->keysym.scancode == SDL_SCANCODE_S)
-		{
-			_down = 1;
-		}
-
-		if (event->keysym.scancode == SDL_SCANCODE_LEFT
-			|| event->keysym.scancode == SDL_SCANCODE_Q
-			|| event->keysym.scancode == SDL_SCANCODE_A)
-		{
-			_left = 1;
-		}
-
-		if (event->keysym.scancode == SDL_SCANCODE_RIGHT
-			|| event->keysym.scancode == SDL_SCANCODE_D)
-		{
-			_right = 1;
-		}
-	}
-}
-
-void Game::doKeyUp(SDL_KeyboardEvent* event)
-{
-	if (event->repeat == 0)
-	{
-		if (event->keysym.scancode == SDL_SCANCODE_UP
-			|| event->keysym.scancode == SDL_SCANCODE_Z
-			|| event->keysym.scancode == SDL_SCANCODE_W)
-		{
-			_up = 0;
-		}
-
-		if (event->keysym.scancode == SDL_SCANCODE_DOWN
-			|| event->keysym.scancode == SDL_SCANCODE_S)
-		{
-			_down = 0;
-		}
-
-		if (event->keysym.scancode == SDL_SCANCODE_LEFT
-			|| event->keysym.scancode == SDL_SCANCODE_Q
-			|| event->keysym.scancode == SDL_SCANCODE_A)
-		{
-			_left = 0;
-		}
-
-		if (event->keysym.scancode == SDL_SCANCODE_RIGHT
-			|| event->keysym.scancode == SDL_SCANCODE_D)
-		{
-			_right = 0;
-		}
-	}
-}
-
 void Game::update()
 {
 	manager.refresh();
-	player.getComponent<DirectionComponent>().setDir(_right - _left, _down - _up);
 	manager.update();
 }
 void Game::render()

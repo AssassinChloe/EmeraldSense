@@ -2,7 +2,6 @@
 
 #include "SDL.h"
 #include "SDL_image.h"
-#include "GameObject.hpp"
 #include <iostream>
 #include "Map.hpp"
 #include "TextureManager.hpp"
@@ -18,8 +17,6 @@ public:
 	void init(const char* title, int xpos, int ypos, int width, int height, bool fullscreen);
 
 	void handleEvents();
-	void doKeyDown(SDL_KeyboardEvent* event);
-	void doKeyUp(SDL_KeyboardEvent* event);
 
 	void update();
 	void render();
@@ -27,6 +24,7 @@ public:
 
 	bool running();
 	static SDL_Renderer *renderer;
+	static SDL_Event event;
 
 private:
 	bool isRunning;

@@ -13,6 +13,6 @@ void TextureManager::Draw(SDL_Texture* tex, SDL_Rect src, SDL_Rect dest)
 {
 	if (tex)
 		SDL_RenderCopy(Game::renderer, tex, &src, &dest);
-	//else
-	//	std::cout << "your tex is null" << std::endl;
+	else
+		std::cout << "your tex is null" << std::endl;
 }

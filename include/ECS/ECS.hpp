@@ -44,7 +44,7 @@ using ComponentArray = std::array<Component*, maxComponents>;
 class Component
 {
 public:
-	Entity* entity;
+	Entity* entity = NULL;
 	virtual void init() {}
 	virtual void update(){}
 	virtual void draw() {}
@@ -60,8 +60,8 @@ protected:
 	bool active = true;
 
 	std::vector<std::unique_ptr<Component>> components;
-	ComponentArray componentArray;
-	ComponentBitSet componentBitSet;
+	ComponentArray componentArray = { NULL, 0 };
+	ComponentBitSet componentBitSet = false;
 
 public:
 	void update() { for (auto& c : components) c->update(); }

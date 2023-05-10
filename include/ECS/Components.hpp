@@ -5,9 +5,6 @@
 
 #include "TextureManager.hpp"
 
-#include "PositionComponent.hpp"
-#include "DirectionComponent.hpp"
+#include "TransformComponent.hpp"
 #include "SpriteComponent.hpp"
-
-
-
+#include "KeyboardController.hpp"

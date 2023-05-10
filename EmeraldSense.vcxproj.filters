@@ -21,13 +21,13 @@
     <ClCompile Include="src\Game.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
-    <ClCompile Include="src\GameObject.cpp">
-      <Filter>Fichiers sources</Filter>
-    </ClCompile>
     <ClCompile Include="src\Map.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
     <ClCompile Include="src\TextureManager.cpp">
+      <Filter>Fichiers sources</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Vector2D.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
   </ItemGroup>
@@ -35,28 +35,31 @@
     <ClInclude Include="include\Game.hpp">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
-    <ClInclude Include="include\GameObject.hpp">
-      <Filter>Fichiers d%27en-tête</Filter>
-    </ClInclude>
     <ClInclude Include="include\Map.hpp">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
-    <ClInclude Include="include\ECS.hpp">
+    <ClInclude Include="include\ECS\ECS.hpp">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
-    <ClInclude Include="include\PositionComponent.hpp">
+    <ClInclude Include="include\ECS\TransformComponent.hpp">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
-    <ClInclude Include="include\SpriteComponent.hpp">
+    <ClInclude Include="include\ECS\SpriteComponent.hpp">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
-    <ClInclude Include="include\Components.hpp">
-      <Filter>Fichiers d%27en-tête</Filter>
-    </ClInclude>
-    <ClInclude Include="include\DirectionComponent.hpp">
+    <ClInclude Include="include\ECS\Components.hpp">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
     <ClInclude Include="include\TextureManager.hpp">
+      <Filter>Fichiers d%27en-tête</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Vector2D.hpp">
+      <Filter>Fichiers d%27en-tête</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ECS\KeyboardController.hpp">
+      <Filter>Fichiers d%27en-tête</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ECS\AnimatedSpriteComponent.hpp">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
   </ItemGroup>
@@ -64,13 +67,9 @@
     <None Include="SDL2_image.dll" />
     <None Include="SDL2.dll" />
     <None Include=".gitignore" />
-    <None Include="assets\renard.json" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="assets\water.png">
-      <Filter>Fichiers de ressources</Filter>
-    </Image>
-    <Image Include="assets\renard.png">
       <Filter>Fichiers de ressources</Filter>
     </Image>
     <Image Include="assets\paon.png">
@@ -80,6 +79,9 @@
       <Filter>Fichiers de ressources</Filter>
     </Image>
     <Image Include="assets\dirt.png">
+      <Filter>Fichiers de ressources</Filter>
+    </Image>
+    <Image Include="assets\marchetest.png">
       <Filter>Fichiers de ressources</Filter>
     </Image>
   </ItemGroup>
