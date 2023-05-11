@@ -30,6 +30,9 @@
     <ClCompile Include="src\Vector2D.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
+    <ClCompile Include="src\Collision.cpp">
+      <Filter>Fichiers sources</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\Game.hpp">
@@ -62,6 +65,12 @@
     <ClInclude Include="include\ECS\AnimatedSpriteComponent.hpp">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
+    <ClInclude Include="include\ECS\ColliderComponent.hpp">
+      <Filter>Fichiers d%27en-tête</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Collision.hpp">
+      <Filter>Fichiers d%27en-tête</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="SDL2_image.dll" />
@@ -82,6 +91,12 @@
       <Filter>Fichiers de ressources</Filter>
     </Image>
     <Image Include="assets\marchetest.png">
+      <Filter>Fichiers de ressources</Filter>
+    </Image>
+    <Image Include="assets\wall.png">
+      <Filter>Fichiers de ressources</Filter>
+    </Image>
+    <Image Include="assets\fumartest.png">
       <Filter>Fichiers de ressources</Filter>
     </Image>
   </ItemGroup>

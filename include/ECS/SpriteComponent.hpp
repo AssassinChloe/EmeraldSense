@@ -26,6 +26,10 @@ public:
 
 	void init()
 	{
+		if (!entity->hasComponent<TransformComponent>())
+		{
+			entity->addComponent<TransformComponent>();
+		}
 		transform = &entity->getComponent<TransformComponent>();
 		src.x = src.y = 0;
 		int w, h;
@@ -50,8 +54,10 @@ public:
 
 	void update() override
 	{
-		dst.x = (int)transform->getPosX();
-		dst.y = (int)transform->getPosY();
+		dst.x = static_cast<int>(transform->getPosX());
+		dst.y = static_cast<int>(transform->getPosY());
+		dst.w = transform->getWidth() * transform->getScale();
+		dst.h = transform->getHeight() * transform->getScale();
 		if (entity->hasComponent<AnimatedSpriteComponent>() == true)
 		{
 			src.x = src.w * entity->getComponent<AnimatedSpriteComponent>().getFrame();

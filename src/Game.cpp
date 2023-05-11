@@ -1,10 +1,12 @@
 #include "Game.hpp"
 #include "ECS/Components.hpp"
+#include "Collision.hpp"
 
 SDL_Renderer* Game::renderer = NULL;
 SDL_Event Game::event;
 Manager manager;
 auto& player(manager.addEntity());
+auto& wall(manager.addEntity());
 
 Game::Game()
 {
@@ -51,10 +53,15 @@ void Game::init(const char* title, int xpos, int ypos, int width, int height, bo
 		else
 		{
 			this->map = new Map();
-			player.addComponent<TransformComponent>();
+			player.addComponent<TransformComponent>(2);
 			player.addComponent<AnimatedSpriteComponent>(2, 1);
 			player.addComponent<SpriteComponent>("assets/marchetest.png");
 			player.addComponent<KeyboardController>();
+			player.addComponent<ColliderComponent>("player");
+
+			wall.addComponent<TransformComponent>(300.0f, 300.0f, 300, 20, 1);
+			wall.addComponent<SpriteComponent>("assets/wall.png");
+			wall.addComponent<ColliderComponent>("wall");
 
 		}
 	}
@@ -76,6 +83,11 @@ void Game::update()
 {
 	manager.refresh();
 	manager.update();
+
+	if (Collision::AABB(player.getComponent<ColliderComponent>().getCollider(), wall.getComponent<ColliderComponent>().getCollider()))
+	{
+		player.getComponent<TransformComponent>().setVelocity(player.getComponent<TransformComponent>().getVelocity() * -1);
+	}
 }
 void Game::render()
 {

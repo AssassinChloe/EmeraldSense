@@ -7,31 +7,45 @@ class TransformComponent : public Component
 private:
 	Vector2D position;
 	Vector2D velocity;
+	int height = 32;
+	int width = 32;
+	int scale = 1;
 	int speed = 1;
 
 public:
 
 	TransformComponent()
 	{
-		position.x = 0.0f;
-		position.y = 0.0f;
+		position.Zero();
+	}
+
+	TransformComponent(int sc)
+	{
+		position.Zero();
+		scale = sc;
 	}
 	TransformComponent(float x, float y)
 	{
 		position.x = x;
 		position.y = y;
 	}
+	TransformComponent(float x, float y, int w, int h, int sc)
+	{
+		position.x = x;
+		position.y = y;
+		width = w;
+		height = h;
+		scale = sc;
+	}
 
 	void init() override
 	{
-		velocity.x = 0;
-		velocity.y = 0;
+		velocity.Zero();
 	}
 
 	void update() override
 	{
-		position.x += velocity.x * speed;
-		position.y += velocity.y * speed;
+		position += velocity * speed;
 	}
 
 
@@ -91,5 +105,36 @@ public:
 	void setSpeed(int newSpeed)
 	{
 		speed = newSpeed;
+	}
+
+	//SIZE HANDLING
+	int getScale()
+	{
+		return scale;
+	}
+
+	void setScale(int newScale)
+	{
+		scale = newScale;
+	}
+
+	int getWidth()
+	{
+		return width;
+	}
+
+	int getHeight()
+	{
+		return height;
+	}
+
+	void setWidth(int w)
+	{
+		width = w;
+	}
+
+	void setHeight(int h)
+	{
+		height = h;
 	}
 };

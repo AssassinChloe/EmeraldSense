@@ -9,6 +9,10 @@ private:
 	TransformComponent* transform;
 
 	public:
+	KeyboardController()
+	{
+		transform = NULL;
+	}
 	void init() override
 	{
 		transform = &entity->getComponent<TransformComponent>();
