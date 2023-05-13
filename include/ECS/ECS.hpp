@@ -15,15 +15,17 @@
 
 class Component;
 class Entity;
+class Manager;
+
 
 using ComponentID = std::size_t;
-
+using Group = std::size_t;
 //The getComponentTypeID() and getComponentTypeID<T>() are helper functions that generate unique IDs for different component
 //types, these are used to identify components in the bitset and array.
 
 inline ComponentID getUniqueComponentID() noexcept
 {
-	static ComponentID lastID = 0;
+	static ComponentID lastID = 0u;
 	return (lastID++);
 }
 
@@ -35,8 +37,10 @@ template <typename T> inline ComponentID getComponentTypeID() noexcept
 }
 
 constexpr std::size_t maxComponents = 32;
+constexpr std::size_t maxGroups = 32;
 
 using ComponentBitSet = std::bitset<maxComponents>;
+using GroupBitSet = std::bitset<maxGroups>;
 using ComponentArray = std::array<Component*, maxComponents>;
 
 //Component: This is the base class for all components, it defines the basic interface of a component and contains a 
@@ -58,17 +62,29 @@ class Entity
 {
 protected:
 	bool active = true;
-
+	Manager& manager;
 	std::vector<std::unique_ptr<Component>> components;
 	ComponentArray componentArray = { NULL, 0 };
 	ComponentBitSet componentBitSet = false;
+	GroupBitSet groupBitset = false;
 
 public:
+	Entity(Manager &manager) : manager(manager){}
 	void update() { for (auto& c : components) c->update(); }
 	void draw() { for (auto& c : components) c->draw(); }
 	bool isActive() const { return active; }
 	void destroy() { active = false; }
 
+	bool hasGroup(Group group)
+	{
+		return groupBitset[group];
+	}
+
+	void addGroup(Group group);
+	void delGroup(Group group)
+	{
+		groupBitset[group] = false;
+	}
 	//The hasComponent<T>() function is used to check if an entity has a specific component.
 	template <typename T> bool hasComponent() const
 	{
@@ -106,6 +122,7 @@ class Manager
 {
 protected:
 	std::vector<std::unique_ptr<Entity>> entities;
+	std::array<std::vector<Entity *>, maxGroups> groupedEntities;
 
 public:
 	void update()
@@ -121,6 +138,15 @@ public:
 	//The refresh() method of the Manager class is used to remove entities that have been marked for destruction.
 	void refresh()
 	{
+		for (auto i(0u); i < maxGroups; i++)
+		{
+			auto& v(groupedEntities[i]);
+			v.erase(
+				std::remove_if(std::begin(v), std::end(v), [i](Entity* mEntity)
+					{
+						return !mEntity->isActive() || !mEntity->hasGroup(i);
+					}), std::end(v));
+		}
 		entities.erase(std::remove_if(std::begin(entities), std::end(entities), [](const std::unique_ptr<Entity>& mEntity)
 			{
 				return !mEntity->isActive();
@@ -128,13 +154,23 @@ public:
 			std::end(entities));
 	}
 
+	void addToGroup(Entity* mEntity, Group mGroup)
+	{
+		groupedEntities[mGroup].emplace_back(mEntity);
+	}
+
+	std::vector<Entity*>& getGroup(Group mGroup)
+	{
+		return groupedEntities[mGroup];
+	}
 	//The addEntity() function is used to add a new entity to the game.
 	Entity& addEntity()
 	{
-		Entity* e = new Entity();
+		Entity* e = new Entity(*this);
 		std::unique_ptr<Entity> uPtr(e);
 		entities.emplace_back(std::move(uPtr));
 		return *e;
 	}
+
 
 };

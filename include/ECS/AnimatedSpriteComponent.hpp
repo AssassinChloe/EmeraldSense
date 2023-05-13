@@ -15,18 +15,18 @@ public :
     {
         Uint32 ticks = SDL_GetTicks();
         Uint32 seconds = ticks / 1000;
-        Uint32 xpos = seconds % (spriteNbW * spriteNbH);
+        Uint32 xpos = seconds % (this->spriteNbW * this->spriteNbH);
         return (xpos);
     }
 
     int getSpriteNbW()
     {
-        return (spriteNbW);
+        return (this->spriteNbW);
     }
 
     int getSpriteNbH()
     {
-        return (spriteNbH);
+        return (this->spriteNbH);
     }
 
 };

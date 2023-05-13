@@ -11,11 +11,11 @@ private:
 	public:
 	KeyboardController()
 	{
-		transform = NULL;
+		this->transform = NULL;
 	}
 	void init() override
 	{
-		transform = &entity->getComponent<TransformComponent>();
+		this->transform = &this->entity->getComponent<TransformComponent>();
 	}
 
 	void update() override
@@ -25,16 +25,16 @@ private:
 			switch (Game::event.key.keysym.sym)
 			{
 			case SDLK_z:
-				transform->setVelY(-1);
+				this->transform->setVelY(-1);
 				break;
 			case SDLK_s:
-				transform->setVelY(1);
+				this->transform->setVelY(1);
 				break;
 			case SDLK_q:
-				transform->setVelX(-1);
+				this->transform->setVelX(-1);
 				break;
 			case SDLK_d:
-				transform->setVelX(1);
+				this->transform->setVelX(1);
 				break;
 			default:
 				break;
@@ -45,16 +45,16 @@ private:
 			switch (Game::event.key.keysym.sym)
 			{
 			case SDLK_z:
-				transform->setVelY(0);
+				this->transform->setVelY(0);
 				break;
 			case SDLK_s:
-				transform->setVelY(0);
+				this->transform->setVelY(0);
 				break;
 			case SDLK_q:
-				transform->setVelX(0);
+				this->transform->setVelX(0);
 				break;
 			case SDLK_d:
-				transform->setVelX(0);
+				this->transform->setVelX(0);
 				break;
 			default:
 				break;

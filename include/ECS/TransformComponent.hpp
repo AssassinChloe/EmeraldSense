@@ -16,36 +16,36 @@ public:
 
 	TransformComponent()
 	{
-		position.Zero();
+		this->position.Zero();
 	}
 
 	TransformComponent(int sc)
 	{
-		position.Zero();
-		scale = sc;
+		this->position.Zero();
+		this->scale = sc;
 	}
 	TransformComponent(float x, float y)
 	{
-		position.x = x;
-		position.y = y;
+		this->position.x = x;
+		this->position.y = y;
 	}
 	TransformComponent(float x, float y, int w, int h, int sc)
 	{
-		position.x = x;
-		position.y = y;
-		width = w;
-		height = h;
-		scale = sc;
+		this->position.x = x;
+		this->position.y = y;
+		this->width = w;
+		this->height = h;
+		this->scale = sc;
 	}
 
 	void init() override
 	{
-		velocity.Zero();
+		this->velocity.Zero();
 	}
 
 	void update() override
 	{
-		position += velocity * speed;
+		this->position += this->velocity * this->speed;
 	}
 
 
@@ -53,88 +53,88 @@ public:
 
 	float getPosX()
 	{
-		return position.x;
+		return this->position.x;
 	}
 	float getPosY()
 	{
-		return position.y;
+		return this->position.y;
 	}
 
 	Vector2D getPosition()
 	{
-		return(position);
+		return(this->position);
 	}
 
 	void setPosition(Vector2D& vec)
 	{
-		position = vec;
+		this->position = vec;
 	}
 
 	// VELOCITY HANDLING
 
 	float getDirX()
 	{
-		return position.x;
+		return this->position.x;
 	}
 	float getDirY()
 	{
-		return position.y;
+		return this->position.y;
 	}
 
 	Vector2D getVelocity()
 	{
-		return velocity;
+		return this->velocity;
 	}
 
 	void setVelocity(Vector2D& vec)
 	{
-		velocity = vec;
+		this->velocity = vec;
 	}
 
 	void setVelX(float newX)
 	{
-		velocity.x = newX;
+		this->velocity.x = newX;
 	}
 
 	void setVelY(float newY)
 	{
-		velocity.y = newY;
+		this->velocity.y = newY;
 	}
 
 	//SPEED HANDLING 
 	void setSpeed(int newSpeed)
 	{
-		speed = newSpeed;
+		this->speed = newSpeed;
 	}
 
 	//SIZE HANDLING
 	int getScale()
 	{
-		return scale;
+		return this->scale;
 	}
 
 	void setScale(int newScale)
 	{
-		scale = newScale;
+		this->scale = newScale;
 	}
 
 	int getWidth()
 	{
-		return width;
+		return this->width;
 	}
 
 	int getHeight()
 	{
-		return height;
+		return this->height;
 	}
 
 	void setWidth(int w)
 	{
-		width = w;
+		this->width = w;
 	}
 
 	void setHeight(int h)
 	{
-		height = h;
+		this->height = h;
 	}
 };

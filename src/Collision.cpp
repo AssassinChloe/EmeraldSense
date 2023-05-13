@@ -1,4 +1,5 @@
 #include "Collision.hpp"
+#include "ECS/ColliderComponent.hpp"
 
 bool Collision::AABB(const SDL_Rect& A, const SDL_Rect& B)
 {
@@ -7,5 +8,15 @@ bool Collision::AABB(const SDL_Rect& A, const SDL_Rect& B)
 		A.y + A.h >= B.y &&
 		B.y + B.h >= A.y)
 		return true;
+	return false;
+}
+
+bool Collision::AABB(const ColliderComponent& colA, const ColliderComponent& colB)
+{
+	if (AABB(colA.getCollider(), colB.getCollider()))
+	{
+		std::cout << colA.getTag() << " hits " << colB.getTag() << std::endl;
+		return true;
+	}
 	return false;
 }

@@ -26,41 +26,41 @@ public:
 
 	void init()
 	{
-		if (!entity->hasComponent<TransformComponent>())
+		if (!this->entity->hasComponent<TransformComponent>())
 		{
-			entity->addComponent<TransformComponent>();
+			this->entity->addComponent<TransformComponent>();
 		}
-		transform = &entity->getComponent<TransformComponent>();
-		src.x = src.y = 0;
+		this->transform = &this->entity->getComponent<TransformComponent>();
+		this->src.x = this->src.y = 0;
 		int w, h;
-		SDL_QueryTexture(texture, NULL, NULL, &w, &h);
+		SDL_QueryTexture(this->texture, NULL, NULL, &w, &h);
 		if (entity->hasComponent<AnimatedSpriteComponent>() == true)
 		{
-			src.w = w / entity->getComponent<AnimatedSpriteComponent>().getSpriteNbW();
-			src.h = h / entity->getComponent<AnimatedSpriteComponent>().getSpriteNbH();
+			this->src.w = w / this->entity->getComponent<AnimatedSpriteComponent>().getSpriteNbW();
+			this->src.h = h / this->entity->getComponent<AnimatedSpriteComponent>().getSpriteNbH();
 		}
 		else
 		{
-			src.w = w;
-			src.h = h;
+			this->src.w = w;
+			this->src.h = h;
 		}
-		dst = src;
+		this->dst = this->src;
 	}
 
 	void setTexture(const char* path)
 	{
-		texture = texMan.loadTexture(path);
+		this->texture = this->texMan.loadTexture(path);
 	}
 
 	void update() override
 	{
-		dst.x = static_cast<int>(transform->getPosX());
-		dst.y = static_cast<int>(transform->getPosY());
-		dst.w = transform->getWidth() * transform->getScale();
-		dst.h = transform->getHeight() * transform->getScale();
-		if (entity->hasComponent<AnimatedSpriteComponent>() == true)
+		this->dst.x = static_cast<int>(this->transform->getPosX());
+		this->dst.y = static_cast<int>(this->transform->getPosY());
+		this->dst.w = this->transform->getWidth() * this->transform->getScale();
+		this->dst.h = this->transform->getHeight() * this->transform->getScale();
+		if (this->entity->hasComponent<AnimatedSpriteComponent>() == true)
 		{
-			src.x = src.w * entity->getComponent<AnimatedSpriteComponent>().getFrame();
+			this->src.x = this->src.w * this->entity->getComponent<AnimatedSpriteComponent>().getFrame();
 		}
 
 	}
@@ -68,12 +68,12 @@ public:
 	{
 		/*std::cout << "src :" << src.x << "," << src.y << "," << src.w << "," << src.h << std::endl;
 		std::cout << "dst :" << dst.x << "," << dst.y << "," << dst.w << "," << dst.h << std::endl;*/
-		texMan.Draw(texture, src, dst);
+		this->texMan.Draw(this->texture, this->src, this->dst);
 	}
 
 	~SpriteComponent()
 	{
-		if (texture)
-			SDL_DestroyTexture(texture);
+		if (this->texture)
+			SDL_DestroyTexture(this->texture);
 	}
 };

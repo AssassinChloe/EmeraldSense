@@ -5,8 +5,9 @@
 #include <iostream>
 #include "Map.hpp"
 #include "TextureManager.hpp"
+#include <vector>
 
-
+class ColliderComponent;
 class Map;
 
 class Game {
@@ -23,12 +24,14 @@ public:
 	void clean();
 
 	bool running();
+
+	static void addTile(int id, int x, int y);
 	static SDL_Renderer *renderer;
 	static SDL_Event event;
+	static std::vector<ColliderComponent*>colliders;
 
 private:
 	bool isRunning;
 	SDL_Window* window;
-	int _up, _down, _left, _right;
 	Map *map;
 };

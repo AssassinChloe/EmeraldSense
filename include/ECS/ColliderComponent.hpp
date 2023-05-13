@@ -15,32 +15,38 @@ private:
 public:
 	ColliderComponent()
 	{
-		tag = "notag";
+		this->tag = "notag";
 	}
 
 	ColliderComponent(std::string t)
 	{
-		tag = t;
+		this->tag = t;
 	}
 	void init() override
 	{
-		if (!entity->hasComponent<TransformComponent>())
+		if (!this->entity->hasComponent<TransformComponent>())
 		{
-			entity->addComponent<TransformComponent>();
+			this->entity->addComponent<TransformComponent>();
 		}
-		transform = &entity->getComponent<TransformComponent>();
+		this->transform = &entity->getComponent<TransformComponent>();
+		Game::colliders.push_back(this);
 	}
 
 	void update() override
 	{
-		collider.x = static_cast<int>(transform->getPosX());
-		collider.y = static_cast<int>(transform->getPosY());
-		collider.w = transform->getWidth() * transform->getScale();
-		collider.h = transform->getHeight() * transform->getScale();
+		this->collider.x = static_cast<int>(this->transform->getPosX());
+		this->collider.y = static_cast<int>(this->transform->getPosY());
+		this->collider.w = this->transform->getWidth() * this->transform->getScale();
+		this->collider.h = this->transform->getHeight() * this->transform->getScale();
 	}
 
-	SDL_Rect& getCollider()
+	SDL_Rect getCollider() const
 	{
-		return collider;
+		return this->collider;
+	}
+
+	std::string getTag() const
+	{
+		return this->tag;
 	}
 };

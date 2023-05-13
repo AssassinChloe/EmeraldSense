@@ -134,6 +134,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="include\ECS\ECS.cpp" />
     <ClCompile Include="src\Collision.cpp" />
     <ClCompile Include="src\Game.cpp" />
     <ClCompile Include="src\main.cpp" />
@@ -148,6 +149,7 @@
     <ClInclude Include="include\ECS\Components.hpp" />
     <ClInclude Include="include\ECS\ECS.hpp" />
     <ClInclude Include="include\ECS\SpriteComponent.hpp" />
+    <ClInclude Include="include\ECS\TileComponent.hpp" />
     <ClInclude Include="include\Game.hpp" />
     <ClInclude Include="include\Map.hpp" />
     <ClInclude Include="include\ECS\TransformComponent.hpp" />
@@ -168,6 +170,9 @@
     <Image Include="assets\paon.png" />
     <Image Include="assets\wall.png" />
     <Image Include="assets\water.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="assets\map.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
