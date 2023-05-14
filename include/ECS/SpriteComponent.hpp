@@ -3,6 +3,7 @@
 
 #include "Components.hpp"
 #include "AnimatedSpriteComponent.hpp"
+#include "TextureManager.hpp"
 
 
 class TransformComponent;
@@ -14,12 +15,12 @@ private:
 	TransformComponent *transform;
 	SDL_Texture* texture;
 	SDL_Rect src, dst;
-	TextureManager texMan;
+	bool animated = false;
 
 public:
-	SpriteComponent() = default;
+	SpriteComponent(): transform(NULL), texture(NULL), src({0,0,0,0}), dst({0,0,0,0}) {}
 
-	SpriteComponent(const char* path)
+	SpriteComponent(const char* path, bool animation) : transform(NULL), texture(NULL), src({ 0,0,0,0 }), dst({ 0,0,0,0 }), animated(animation)
 	{
 		setTexture(path);
 	}
@@ -49,7 +50,7 @@ public:
 
 	void setTexture(const char* path)
 	{
-		this->texture = this->texMan.loadTexture(path);
+		this->texture = TextureManager::loadTexture(path);
 	}
 
 	void update() override
@@ -58,9 +59,20 @@ public:
 		this->dst.y = static_cast<int>(this->transform->getPosY());
 		this->dst.w = this->transform->getWidth() * this->transform->getScale();
 		this->dst.h = this->transform->getHeight() * this->transform->getScale();
-		if (this->entity->hasComponent<AnimatedSpriteComponent>() == true)
+		if (entity->hasComponent<AnimatedSpriteComponent>() == true && this->animated == true)
 		{
 			this->src.x = this->src.w * this->entity->getComponent<AnimatedSpriteComponent>().getFrame();
+		}
+		else if (entity->hasComponent<AnimatedSpriteComponent>() == true && this->animated == false)
+		{
+			if (transform->getDirX() < 0)
+				this->src.x = this->src.w * 0;
+			else if (transform->getDirX() > 0)
+				this->src.x = this->src.w * 1;
+			else if (transform->getDirY() > 0)
+				this->src.x = this->src.w * 2;
+			else if (transform->getDirY() < 0)
+				this->src.x = this->src.w * 3;
 		}
 
 	}
@@ -68,12 +80,14 @@ public:
 	{
 		/*std::cout << "src :" << src.x << "," << src.y << "," << src.w << "," << src.h << std::endl;
 		std::cout << "dst :" << dst.x << "," << dst.y << "," << dst.w << "," << dst.h << std::endl;*/
-		this->texMan.Draw(this->texture, this->src, this->dst);
+		TextureManager::Draw(this->texture, this->src, this->dst);
 	}
 
 	~SpriteComponent()
 	{
-		if (this->texture)
-			SDL_DestroyTexture(this->texture);
+		//if (this->texture)
+		//{
+		//	SDL_DestroyTexture(this->texture);
+		//}
 	}
 };

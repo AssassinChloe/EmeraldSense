@@ -109,6 +109,7 @@
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>C:\Users\clotu\Documents\Dev\Lib\SDL2_image\include;C:\Users\clotu\Documents\Dev\EmeraldSense\include;C:\Users\clotu\Documents\Dev\Lib\SDL2\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -143,6 +144,7 @@
     <ClCompile Include="src\TextureManager.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="include\Const.hpp" />
     <ClInclude Include="include\ECS\AnimatedSpriteComponent.hpp" />
     <ClInclude Include="include\ECS\ColliderComponent.hpp" />
     <ClInclude Include="include\Collision.hpp" />
@@ -163,16 +165,22 @@
     <None Include="SDL2_image.dll" />
   </ItemGroup>
   <ItemGroup>
+    <Image Include="assets\dig_dirt.png" />
     <Image Include="assets\dirt.png" />
+    <Image Include="assets\dirt_with_worms.png" />
     <Image Include="assets\fumartest.png" />
     <Image Include="assets\grass.png" />
     <Image Include="assets\marchetest.png" />
+    <Image Include="assets\nean.png" />
     <Image Include="assets\paon.png" />
+    <Image Include="assets\rat_taupe.png" />
+    <Image Include="assets\rock.png" />
     <Image Include="assets\wall.png" />
     <Image Include="assets\water.png" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="assets\map.txt" />
+    <Text Include="assets\map_ext.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

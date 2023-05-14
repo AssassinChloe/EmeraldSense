@@ -74,11 +74,11 @@ public:
 
 	float getDirX()
 	{
-		return this->position.x;
+		return this->velocity.x;
 	}
 	float getDirY()
 	{
-		return this->position.y;
+		return this->velocity.y;
 	}
 
 	Vector2D getVelocity()

@@ -1,13 +1,13 @@
 #include "Game.hpp"
 #include "ECS/Components.hpp"
 #include "Collision.hpp"
+#include "Const.hpp"
 
 SDL_Renderer* Game::renderer = NULL;
 SDL_Event Game::event;
 std::vector<ColliderComponent*> Game::colliders;
 Manager manager;
 auto& player(manager.addEntity());
-auto& wall(manager.addEntity());
 
 enum groupLabels : std::size_t {
 	groupMap,
@@ -56,11 +56,11 @@ void Game::init(const char* title, int xpos, int ypos, int width, int height, bo
 		}
 		else
 		{
-			Map::loadMap("assets/map.txt", 25, 20);
+			Map::loadMap(MAP_PATH, MAP_WIDTH, MAP_HEIGHT);
 
-			player.addComponent<TransformComponent>(100.0f, 100.0f, 32, 32, 2);
-			player.addComponent<AnimatedSpriteComponent>(2, 1);
-			player.addComponent<SpriteComponent>("assets/marchetest.png");
+			player.addComponent<TransformComponent>(static_cast<float>(PLAYER_X), static_cast<float>(PLAYER_Y), 32, 32, 1);
+			player.addComponent<AnimatedSpriteComponent>(4, 1);
+			player.addComponent<SpriteComponent>(PLAYER_PATH, false);
 			player.addComponent<KeyboardController>();
 			player.addComponent<ColliderComponent>("player");
 			player.addGroup(groupPlayers);
@@ -86,13 +86,13 @@ void Game::update()
 	manager.refresh();
 	manager.update();
 
-	for (auto cc : colliders)
-	{
-		if (cc != &player.getComponent<ColliderComponent>() && Collision::AABB(player.getComponent<ColliderComponent>(), *cc))
-		{
-			player.getComponent<TransformComponent>().setVelocity(player.getComponent<TransformComponent>().getVelocity() * -1);
-		}
-	}
+	//for (auto cc : colliders)
+	//{
+	//	if (cc != &player.getComponent<ColliderComponent>() && Collision::AABB(player.getComponent<ColliderComponent>(), *cc))
+	//	{
+	//		player.getComponent<TransformComponent>().setVelocity(player.getComponent<TransformComponent>().getVelocity() * -1);
+	//	}
+	//}
 }
 
 auto& tiles(manager.getGroup(groupMap));
@@ -135,6 +135,6 @@ void Game::addTile(int id, int x, int y)
 	auto& tile(manager.addEntity());
 	tile.addComponent<TileComponent>(x, y, 32, 32, id);
 	tile.addGroup(groupMap);
-	if (id == 3)
-		tile.addComponent<ColliderComponent>("wall");
+	if (id == WATER || id == DIRT || id == WORM)
+		tile.addComponent<ColliderComponent>("obstacle");
 }

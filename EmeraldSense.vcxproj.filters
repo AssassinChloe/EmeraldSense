@@ -77,6 +77,9 @@
     <ClInclude Include="include\ECS\TileComponent.hpp">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
+    <ClInclude Include="include\Const.hpp">
+      <Filter>Fichiers d%27en-tête</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="SDL2_image.dll" />
@@ -105,8 +108,24 @@
     <Image Include="assets\fumartest.png">
       <Filter>Fichiers de ressources</Filter>
     </Image>
+    <Image Include="assets\nean.png">
+      <Filter>Fichiers de ressources</Filter>
+    </Image>
+    <Image Include="assets\rat_taupe.png">
+      <Filter>Fichiers de ressources</Filter>
+    </Image>
+    <Image Include="assets\dig_dirt.png">
+      <Filter>Fichiers de ressources</Filter>
+    </Image>
+    <Image Include="assets\dirt_with_worms.png">
+      <Filter>Fichiers de ressources</Filter>
+    </Image>
+    <Image Include="assets\rock.png">
+      <Filter>Fichiers de ressources</Filter>
+    </Image>
   </ItemGroup>
   <ItemGroup>
     <Text Include="assets\map.txt" />
+    <Text Include="assets\map_ext.txt" />
   </ItemGroup>
 </Project>

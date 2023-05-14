@@ -1,17 +1,20 @@
 #pragma once
 #include "Game.hpp"
 #include "Components.hpp"
+#include "Vector2D.hpp"
 
 class KeyboardController : public Component
 {
 
 private:
 	TransformComponent* transform;
+	int up, left, right, down;
 
 	public:
 	KeyboardController()
 	{
 		this->transform = NULL;
+		this->up = this->down = this->left = this->right = 0;
 	}
 	void init() override
 	{
@@ -25,16 +28,16 @@ private:
 			switch (Game::event.key.keysym.sym)
 			{
 			case SDLK_z:
-				this->transform->setVelY(-1);
+				this->up = 1;
 				break;
 			case SDLK_s:
-				this->transform->setVelY(1);
+				this->down = 1;
 				break;
 			case SDLK_q:
-				this->transform->setVelX(-1);
+				this->left = 1;
 				break;
 			case SDLK_d:
-				this->transform->setVelX(1);
+				this->right = 1;
 				break;
 			default:
 				break;
@@ -45,22 +48,23 @@ private:
 			switch (Game::event.key.keysym.sym)
 			{
 			case SDLK_z:
-				this->transform->setVelY(0);
+				this->up = 0;
 				break;
 			case SDLK_s:
-				this->transform->setVelY(0);
+				this->down = 0;
 				break;
 			case SDLK_q:
-				this->transform->setVelX(0);
+				this->left = 0;
 				break;
 			case SDLK_d:
-				this->transform->setVelX(0);
+				this->right = 0;
 				break;
 			default:
 				break;
 			}
 		}
-
+		Vector2D dir(static_cast<float>(this->right - this->left), static_cast<float>(this->down - this->up));
+		this->transform->setVelocity(dir);
 	}
 			
 };

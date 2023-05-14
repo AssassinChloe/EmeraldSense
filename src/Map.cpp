@@ -17,8 +17,8 @@ void Map::loadMap(std::string path, int sizeX, int sizeY)
 			mapFile.get(tile);
 			int tile_int = atoi(&tile);
 			Game::addTile(tile_int,  x * 32, y * 32);
-			mapFile.ignore();
 		}
+		mapFile.ignore();
 	}
 	mapFile.close();
 }

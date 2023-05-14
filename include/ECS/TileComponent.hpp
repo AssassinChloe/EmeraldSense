@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Components.hpp"
+#include "Const.hpp"
 
 class TileComponent : public Component
 {
@@ -17,20 +18,23 @@ public:
 	{
 		switch (this->id)
 		{
-		case 0:
-			this->path = "assets/water.png";
+		case WATER:
+			this->path = WATER_PATH;
 			break;
-		case 1:
-			this->path = "assets/grass.png";
+		case DIRT:
+			this->path = DIRT_PATH;
 			break;
-		case 2:
-			this->path = "assets/dirt.png";
+		case DIG:
+			this->path = DIG_PATH;
 			break;
-		case 3:
-			this->path = "assets/wall.png";
+		case WORM:
+			this->path = WORM_PATH;
+			break;
+		case ROCK:
+			this->path = ROCK_PATH;
 			break;
 		default:
-			this->path = "asset/nean.png";
+			this->path = DEFAULT_PATH;
 			break;
 		}
 	}
@@ -40,7 +44,7 @@ public:
 		entity->addComponent<TransformComponent>((float)tile.x, (float)tile.y, tile.w, tile.h, 1);
 		transform = &entity->getComponent<TransformComponent>();
 
-		entity->addComponent<SpriteComponent>(path.c_str());
+		entity->addComponent<SpriteComponent>(path.c_str(), false);
 		sprite = &entity->getComponent<SpriteComponent>();
 	}
 };
