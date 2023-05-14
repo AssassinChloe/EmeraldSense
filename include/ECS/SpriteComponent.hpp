@@ -2,25 +2,37 @@
 #pragma once
 
 #include "Components.hpp"
-#include "AnimatedSpriteComponent.hpp"
 #include "TextureManager.hpp"
+#include "Animation.hpp"
+#include <map>
 
 
 class TransformComponent;
-class AnimatedSpriteComponent;
 
 class SpriteComponent : public Component
 {
 private:
-	TransformComponent *transform;
-	SDL_Texture* texture;
+	TransformComponent *transform = NULL;
+	SDL_Texture* texture = NULL;
+	int textureSize = 32;
 	SDL_Rect src, dst;
+
 	bool animated = false;
+	Animation animation = {0, 1, 100};
+	std::map<int, Animation> animations;
+	SDL_RendererFlip spriteFlip = SDL_FLIP_NONE;
+	double angle = 0;
 
 public:
-	SpriteComponent(): transform(NULL), texture(NULL), src({0,0,0,0}), dst({0,0,0,0}) {}
 
-	SpriteComponent(const char* path, bool animation) : transform(NULL), texture(NULL), src({ 0,0,0,0 }), dst({ 0,0,0,0 }), animated(animation)
+	SpriteComponent(): src({0,0,0,0}), dst({0,0,0,0}) {}
+
+	SpriteComponent(const char* path) : src({ 0,0,0,0 }), dst({ 0,0,0,0 })
+	{
+		setTexture(path);
+	}
+	SpriteComponent(const char* path, int size, bool animation)
+	: transform(NULL), texture(NULL), src({ 0,0,0,0 }), dst({ 0,0,0,0 }), animated(animation), textureSize(size)
 	{
 		setTexture(path);
 	}
@@ -33,18 +45,8 @@ public:
 		}
 		this->transform = &this->entity->getComponent<TransformComponent>();
 		this->src.x = this->src.y = 0;
-		int w, h;
-		SDL_QueryTexture(this->texture, NULL, NULL, &w, &h);
-		if (entity->hasComponent<AnimatedSpriteComponent>() == true)
-		{
-			this->src.w = w / this->entity->getComponent<AnimatedSpriteComponent>().getSpriteNbW();
-			this->src.h = h / this->entity->getComponent<AnimatedSpriteComponent>().getSpriteNbH();
-		}
-		else
-		{
-			this->src.w = w;
-			this->src.h = h;
-		}
+		this->src.w = this->textureSize;
+		this->src.h = this->textureSize;
 		this->dst = this->src;
 	}
 
@@ -53,41 +55,82 @@ public:
 		this->texture = TextureManager::loadTexture(path);
 	}
 
+	void angleCalc()
+	{
+		//taupe
+		if (transform->getDirX() == 1)
+			this->spriteFlip = SDL_FLIP_VERTICAL;
+		else if (transform->getDirY() == -1)
+			this->angle = 180;
+		else if (transform->getDirY() == 1)
+			this->angle = 0;
+		
+		//lutin
+		//if (transform->getDirX() == 1)
+		//	this->spriteFlip = 270;
+		//else if (transform->getDirY() == 1)
+		//	this->angle = 90;
+		//else if (transform->getDirY() == -1)
+		//	this->angle = 180;
+	}
+
 	void update() override
 	{
+		if (animated == true && animations.size() > IDLE && transform->getDirX() == 0 && transform->getDirY() == 0)
+		{
+			play(IDLE);
+			//taupe
+			this->spriteFlip = SDL_FLIP_NONE;
+			this->angle = 90;
+
+			//lutin
+			//this->angle = 0;
+
+		}
+		else if (animated == true && animations.size() > WALK && (transform->getDirX() != 0 || transform->getDirY() != 0))
+		{
+			play(WALK);
+			//taupe
+			this->angle = 90;
+			this->spriteFlip = SDL_FLIP_NONE;
+
+			//lutin
+			//this->angle = 90;
+			angleCalc();
+		}
+
+
 		this->dst.x = static_cast<int>(this->transform->getPosX());
 		this->dst.y = static_cast<int>(this->transform->getPosY());
 		this->dst.w = this->transform->getWidth() * this->transform->getScale();
 		this->dst.h = this->transform->getHeight() * this->transform->getScale();
-		if (entity->hasComponent<AnimatedSpriteComponent>() == true && this->animated == true)
+		if (this->animated == true)
 		{
-			this->src.x = this->src.w * this->entity->getComponent<AnimatedSpriteComponent>().getFrame();
+			this->src.x = this->src.w * static_cast<int>((SDL_GetTicks() / this->animation.speed) % this->animation.frames);
 		}
-		else if (entity->hasComponent<AnimatedSpriteComponent>() == true && this->animated == false)
-		{
-			if (transform->getDirX() < 0)
-				this->src.x = this->src.w * 0;
-			else if (transform->getDirX() > 0)
-				this->src.x = this->src.w * 1;
-			else if (transform->getDirY() > 0)
-				this->src.x = this->src.w * 2;
-			else if (transform->getDirY() < 0)
-				this->src.x = this->src.w * 3;
-		}
-
+		this->src.y = this->animation.index * this->src.h;
 	}
 	void draw() override
 	{
-		/*std::cout << "src :" << src.x << "," << src.y << "," << src.w << "," << src.h << std::endl;
-		std::cout << "dst :" << dst.x << "," << dst.y << "," << dst.w << "," << dst.h << std::endl;*/
-		TextureManager::Draw(this->texture, this->src, this->dst);
+		TextureManager::Draw(this->texture, this->src, this->dst, this->angle, this->spriteFlip);
+	}
+
+	void play(int animName)
+	{
+		this->animation = animations[animName];
+	}
+
+	void addAnimation(int index, int f, int s)
+	{
+		animations.emplace(index, Animation(index, f, s));
 	}
 
 	~SpriteComponent()
 	{
-		//if (this->texture)
-		//{
-		//	SDL_DestroyTexture(this->texture);
-		//}
+		if (this->texture != NULL)
+		{
+			SDL_DestroyTexture(this->texture);
+			this->texture = NULL;
+		}
 	}
 };

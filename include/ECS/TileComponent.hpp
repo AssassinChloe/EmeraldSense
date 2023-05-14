@@ -44,7 +44,12 @@ public:
 		entity->addComponent<TransformComponent>((float)tile.x, (float)tile.y, tile.w, tile.h, 1);
 		transform = &entity->getComponent<TransformComponent>();
 
-		entity->addComponent<SpriteComponent>(path.c_str(), false);
+		entity->addComponent<SpriteComponent>(path.c_str());
 		sprite = &entity->getComponent<SpriteComponent>();
+	}
+
+	SDL_Rect getTile()
+	{
+		return this->tile;
 	}
 };

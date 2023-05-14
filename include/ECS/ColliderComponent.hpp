@@ -9,19 +9,14 @@ class ColliderComponent : public Component
 {
 private:
 	SDL_Rect collider;
-	std::string tag;
+	int tag;
 	TransformComponent* transform;
 
 public:
-	ColliderComponent()
-	{
-		this->tag = "notag";
-	}
+	ColliderComponent() : collider({0,0,0,0}), tag(-1), transform(NULL){}
 
-	ColliderComponent(std::string t)
-	{
-		this->tag = t;
-	}
+	ColliderComponent(int t) : collider({0,0,0,0}), tag(t), transform(NULL){}
+
 	void init() override
 	{
 		if (!this->entity->hasComponent<TransformComponent>())
@@ -45,7 +40,7 @@ public:
 		return this->collider;
 	}
 
-	std::string getTag() const
+	int getTag() const
 	{
 		return this->tag;
 	}

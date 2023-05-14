@@ -8,13 +8,13 @@ class KeyboardController : public Component
 
 private:
 	TransformComponent* transform;
-	int up, left, right, down;
+	int up, left, right, down, dig;
 
 	public:
 	KeyboardController()
 	{
 		this->transform = NULL;
-		this->up = this->down = this->left = this->right = 0;
+		this->up = this->down = this->left = this->right, this->dig = 0;
 	}
 	void init() override
 	{
@@ -39,6 +39,9 @@ private:
 			case SDLK_d:
 				this->right = 1;
 				break;
+			case SDLK_m:
+				this->dig = 1;
+				break;
 			default:
 				break;
 			}
@@ -58,6 +61,9 @@ private:
 				break;
 			case SDLK_d:
 				this->right = 0;
+				break;
+			case SDLK_m:
+				this->dig = 0;
 				break;
 			default:
 				break;

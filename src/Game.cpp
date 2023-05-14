@@ -7,7 +7,8 @@ SDL_Renderer* Game::renderer = NULL;
 SDL_Event Game::event;
 std::vector<ColliderComponent*> Game::colliders;
 Manager manager;
-auto& player(manager.addEntity());
+Entity& player(manager.addEntity());
+std::vector<Entity*> tilesV;
 
 enum groupLabels : std::size_t {
 	groupMap,
@@ -57,14 +58,7 @@ void Game::init(const char* title, int xpos, int ypos, int width, int height, bo
 		else
 		{
 			Map::loadMap(MAP_PATH, MAP_WIDTH, MAP_HEIGHT);
-
-			player.addComponent<TransformComponent>(static_cast<float>(PLAYER_X), static_cast<float>(PLAYER_Y), 32, 32, 1);
-			player.addComponent<AnimatedSpriteComponent>(4, 1);
-			player.addComponent<SpriteComponent>(PLAYER_PATH, false);
-			player.addComponent<KeyboardController>();
-			player.addComponent<ColliderComponent>("player");
-			player.addGroup(groupPlayers);
-
+			buildPlayer();
 		}
 	}
 }
@@ -86,18 +80,22 @@ void Game::update()
 	manager.refresh();
 	manager.update();
 
-	//for (auto cc : colliders)
-	//{
-	//	if (cc != &player.getComponent<ColliderComponent>() && Collision::AABB(player.getComponent<ColliderComponent>(), *cc))
-	//	{
-	//		player.getComponent<TransformComponent>().setVelocity(player.getComponent<TransformComponent>().getVelocity() * -1);
-	//	}
-	//}
+	for (auto cc : colliders)
+	{
+		if (cc != &player.getComponent<ColliderComponent>() && Collision::AABB(player.getComponent<ColliderComponent>(), *cc))
+		{
+			if (cc->getTag() == DIRT)
+			{
+				this->addTile(DIG, cc->getCollider().x, cc->getCollider().y);
+				cc->entity->destroy();
+			}
+		}
+	}
 }
 
 auto& tiles(manager.getGroup(groupMap));
 auto& players(manager.getGroup(groupPlayers));
-auto& enemies(manager.getGroup(groupEnemies));
+//auto& enemies(manager.getGroup(groupEnemies));
 
 void Game::render()
 {
@@ -110,14 +108,20 @@ void Game::render()
 	{
 		p->draw();
 	}
-	for (auto& e : enemies)
-	{
-		e->draw();
-	}
+	//for (auto& e : enemies)
+	//{
+	//	e->draw();
+	//}
 	SDL_RenderPresent(this->renderer);
 }
 void Game::clean()
-{	
+{
+	player.destroy();
+	for (Entity* t : tilesV)
+	{
+		t->destroy();
+	}
+	manager.refresh();
 	SDL_DestroyWindow(this->window);
 	SDL_DestroyRenderer(this->renderer);
 	delete(this->map);
@@ -132,9 +136,23 @@ bool Game::running()
 
 void Game::addTile(int id, int x, int y)
 {
-	auto& tile(manager.addEntity());
-	tile.addComponent<TileComponent>(x, y, 32, 32, id);
+	Entity& tile(manager.addEntity());
+	tile.addComponent<TileComponent>(x, y, TILES_H, TILES_W, id);
 	tile.addGroup(groupMap);
-	if (id == WATER || id == DIRT || id == WORM)
-		tile.addComponent<ColliderComponent>("obstacle");
+	if (id == DIRT || id == WORM || id == ROCK)
+	{
+		tile.addComponent<ColliderComponent>(id);
+	}
+	tilesV.push_back(&tile);
+}
+
+void Game::buildPlayer()
+{
+	player.addComponent<TransformComponent>(static_cast<float>(PLAYER_X), static_cast<float>(PLAYER_Y), PLAYER_W, PLAYER_H, 1);
+	player.addComponent<SpriteComponent>(PLAYER_PATH, PLAYER_TEX_SIZE, PLAYER_ANIMATED);
+	player.getComponent<SpriteComponent>().addAnimation(IDLE, PLAYER_IDLE_FRAMES, PLAYER_ANIM_SPEED);
+	player.getComponent<SpriteComponent>().addAnimation(WALK, PLAYER_WALK_FRAMES, PLAYER_ANIM_SPEED);
+	player.addComponent<KeyboardController>();
+	player.addComponent<ColliderComponent>(PLAYER_ID);
+	player.addGroup(groupPlayers);
 }

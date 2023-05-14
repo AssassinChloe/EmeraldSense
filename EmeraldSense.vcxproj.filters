@@ -65,9 +65,6 @@
     <ClInclude Include="include\ECS\KeyboardController.hpp">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
-    <ClInclude Include="include\ECS\AnimatedSpriteComponent.hpp">
-      <Filter>Fichiers d%27en-tête</Filter>
-    </ClInclude>
     <ClInclude Include="include\ECS\ColliderComponent.hpp">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
@@ -80,6 +77,9 @@
     <ClInclude Include="include\Const.hpp">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
+    <ClInclude Include="include\ECS\Animation.hpp">
+      <Filter>Fichiers d%27en-tête</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="SDL2_image.dll" />
@@ -87,40 +87,37 @@
     <None Include=".gitignore" />
   </ItemGroup>
   <ItemGroup>
-    <Image Include="assets\water.png">
-      <Filter>Fichiers de ressources</Filter>
-    </Image>
     <Image Include="assets\paon.png">
       <Filter>Fichiers de ressources</Filter>
     </Image>
-    <Image Include="assets\grass.png">
+    <Image Include="assets\player_sheet.png">
       <Filter>Fichiers de ressources</Filter>
     </Image>
-    <Image Include="assets\dirt.png">
+    <Image Include="assets\textures\dig_dirt.png">
       <Filter>Fichiers de ressources</Filter>
     </Image>
-    <Image Include="assets\marchetest.png">
+    <Image Include="assets\textures\dirt.png">
       <Filter>Fichiers de ressources</Filter>
     </Image>
-    <Image Include="assets\wall.png">
+    <Image Include="assets\textures\dirt_with_worms.png">
       <Filter>Fichiers de ressources</Filter>
     </Image>
-    <Image Include="assets\fumartest.png">
+    <Image Include="assets\textures\grass.png">
       <Filter>Fichiers de ressources</Filter>
     </Image>
-    <Image Include="assets\nean.png">
+    <Image Include="assets\textures\nean.png">
       <Filter>Fichiers de ressources</Filter>
     </Image>
-    <Image Include="assets\rat_taupe.png">
+    <Image Include="assets\textures\rock.png">
       <Filter>Fichiers de ressources</Filter>
     </Image>
-    <Image Include="assets\dig_dirt.png">
+    <Image Include="assets\textures\wall.png">
       <Filter>Fichiers de ressources</Filter>
     </Image>
-    <Image Include="assets\dirt_with_worms.png">
+    <Image Include="assets\textures\water.png">
       <Filter>Fichiers de ressources</Filter>
     </Image>
-    <Image Include="assets\rock.png">
+    <Image Include="assets\rat_taupe_sheet.png">
       <Filter>Fichiers de ressources</Filter>
     </Image>
   </ItemGroup>

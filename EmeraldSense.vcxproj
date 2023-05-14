@@ -145,7 +145,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\Const.hpp" />
-    <ClInclude Include="include\ECS\AnimatedSpriteComponent.hpp" />
+    <ClInclude Include="include\ECS\Animation.hpp" />
     <ClInclude Include="include\ECS\ColliderComponent.hpp" />
     <ClInclude Include="include\Collision.hpp" />
     <ClInclude Include="include\ECS\Components.hpp" />
@@ -165,18 +165,17 @@
     <None Include="SDL2_image.dll" />
   </ItemGroup>
   <ItemGroup>
-    <Image Include="assets\dig_dirt.png" />
-    <Image Include="assets\dirt.png" />
-    <Image Include="assets\dirt_with_worms.png" />
-    <Image Include="assets\fumartest.png" />
-    <Image Include="assets\grass.png" />
-    <Image Include="assets\marchetest.png" />
-    <Image Include="assets\nean.png" />
     <Image Include="assets\paon.png" />
-    <Image Include="assets\rat_taupe.png" />
-    <Image Include="assets\rock.png" />
-    <Image Include="assets\wall.png" />
-    <Image Include="assets\water.png" />
+    <Image Include="assets\player_sheet.png" />
+    <Image Include="assets\rat_taupe_sheet.png" />
+    <Image Include="assets\textures\dig_dirt.png" />
+    <Image Include="assets\textures\dirt.png" />
+    <Image Include="assets\textures\dirt_with_worms.png" />
+    <Image Include="assets\textures\grass.png" />
+    <Image Include="assets\textures\nean.png" />
+    <Image Include="assets\textures\rock.png" />
+    <Image Include="assets\textures\wall.png" />
+    <Image Include="assets\textures\water.png" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="assets\map.txt" />
