@@ -8,6 +8,7 @@
 
 
 class TransformComponent;
+class Vector2D;
 
 class SpriteComponent : public Component
 {
@@ -31,6 +32,8 @@ public:
 	{
 		setTexture(path);
 	}
+	SpriteComponent(SDL_Texture * tex) : src({ 0,0,0,0 }), dst({ 0,0,0,0 }), texture(tex)
+	{}
 	SpriteComponent(const char* path, int size, bool animation)
 	: transform(NULL), texture(NULL), src({ 0,0,0,0 }), dst({ 0,0,0,0 }), animated(animation), textureSize(size)
 	{
@@ -55,53 +58,51 @@ public:
 		this->texture = TextureManager::loadTexture(path);
 	}
 
+
+
 	void angleCalc()
 	{
 		//taupe
 		if (transform->getDirX() == 1)
 			this->spriteFlip = SDL_FLIP_VERTICAL;
-		else if (transform->getDirY() == -1)
-			this->angle = 180;
-		else if (transform->getDirY() == 1)
-			this->angle = 0;
+		else if (transform->getDirX() == -1)
+			this->spriteFlip = SDL_FLIP_NONE;
+		//else if (transform->getDirY() == 1)
+		//	this->angle = 0;
 		
 		//lutin
 		//if (transform->getDirX() == 1)
-		//	this->spriteFlip = 270;
-		//else if (transform->getDirY() == 1)
-		//	this->angle = 90;
+		//	play(WALK_R);
 		//else if (transform->getDirY() == -1)
-		//	this->angle = 180;
+		//	play(WALK_B);
+		//else if (transform->getDirX() == -1)
+		//	play(WALK_L);
+		//else
+		//	play(WALK);
 	}
 
 	void update() override
 	{
-		if (animated == true && animations.size() > IDLE && transform->getDirX() == 0 && transform->getDirY() == 0)
+		if (animated == true && animations.size() > IDLE && transform->getVelocity() == Vector2D(0.0f, 0.0f))
 		{
 			play(IDLE);
+			
 			//taupe
-			this->spriteFlip = SDL_FLIP_NONE;
 			this->angle = 90;
-
 			//lutin
 			//this->angle = 0;
 
 		}
-		else if (animated == true && animations.size() > WALK && (transform->getDirX() != 0 || transform->getDirY() != 0))
+		else if (animated == true && animations.size() > WALK && transform->getVelocity() != Vector2D(0.0f, 0.0f))
 		{
-			play(WALK);
 			//taupe
+			play(WALK);
 			this->angle = 90;
-			this->spriteFlip = SDL_FLIP_NONE;
 
-			//lutin
-			//this->angle = 90;
 			angleCalc();
 		}
-
-
-		this->dst.x = static_cast<int>(this->transform->getPosX());
-		this->dst.y = static_cast<int>(this->transform->getPosY());
+		this->dst.x = static_cast<int>(this->transform->getPosX()) - Game::camera.x;
+		this->dst.y = static_cast<int>(this->transform->getPosY()) - Game::camera.y;
 		this->dst.w = this->transform->getWidth() * this->transform->getScale();
 		this->dst.h = this->transform->getHeight() * this->transform->getScale();
 		if (this->animated == true)
@@ -110,6 +111,7 @@ public:
 		}
 		this->src.y = this->animation.index * this->src.h;
 	}
+
 	void draw() override
 	{
 		TextureManager::Draw(this->texture, this->src, this->dst, this->angle, this->spriteFlip);
@@ -127,7 +129,7 @@ public:
 
 	~SpriteComponent()
 	{
-		if (this->texture != NULL)
+		if (this->texture != NULL) 
 		{
 			SDL_DestroyTexture(this->texture);
 			this->texture = NULL;

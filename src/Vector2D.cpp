@@ -29,7 +29,6 @@ Vector2D& Vector2D::divide(const Vector2D& vec)
 	return (*this);
 }
 
-
 Vector2D& operator+(Vector2D& v1, const Vector2D& v2)
 {
 	return v1.add(v2);
@@ -46,7 +45,6 @@ Vector2D& operator/(Vector2D& v1, const Vector2D& v2)
 {
 	return v1.divide(v2);
 }
-
 
 Vector2D& Vector2D::operator+=(const Vector2D& vec)
 {
@@ -70,6 +68,19 @@ Vector2D& Vector2D::operator*(const int& i)
 	this->x *= i;
 	this->y *= i;
 	return *this;
+}
+
+bool Vector2D::operator==(const Vector2D& vec)
+{
+	if (this->x == vec.x && this->y == vec.y)
+		return true;
+	return false;
+}
+bool Vector2D::operator!=(const Vector2D& vec)
+{
+	if (this->x != vec.x || this->y != vec.y)
+		return true;
+	return false;
 }
 Vector2D& Vector2D::Zero()
 {

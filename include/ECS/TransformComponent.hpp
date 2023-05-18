@@ -60,7 +60,7 @@ public:
 		return this->position.y;
 	}
 
-	Vector2D getPosition()
+	Vector2D& getPosition()
 	{
 		return(this->position);
 	}
@@ -105,6 +105,11 @@ public:
 	void setSpeed(int newSpeed)
 	{
 		this->speed = newSpeed;
+	}
+
+	int getSpeed() const
+	{
+		return this->speed;
 	}
 
 	//SIZE HANDLING

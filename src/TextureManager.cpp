@@ -6,6 +6,8 @@ TextureManager::TextureManager()
 SDL_Texture* TextureManager::loadTexture(const char* fileName)
 {
 	SDL_Texture* tex = IMG_LoadTexture(Game::renderer, fileName);
+	if (!tex)
+		std::cout << "Something went wrong openning texure" << std::endl;
 	return (tex);
 }
 

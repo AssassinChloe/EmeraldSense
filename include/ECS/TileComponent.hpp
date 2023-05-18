@@ -1,4 +1,5 @@
-#pragma once
+#ifndef TILECOMPONENT_HPP
+#define TILECOMPONENT_HPP
 
 #include "Components.hpp"
 #include "Const.hpp"
@@ -6,50 +7,56 @@
 class TileComponent : public Component
 {
 private:
-	TransformComponent* transform;
-	SpriteComponent* sprite;
+	TransformComponent *transform = NULL;
 	SDL_Rect tile;
+	Vector2D initial_position;
 	int id;
-	std::string path;
+	bool rigid = false;
+	SDL_Texture* tilesSheet = NULL;
 
 public:
-	TileComponent() = default;
-	TileComponent(int x, int y, int w, int h, int id) : tile({x,y,w,h}), id(id) 
-	{
-		switch (this->id)
-		{
-		case WATER:
-			this->path = WATER_PATH;
-			break;
-		case DIRT:
-			this->path = DIRT_PATH;
-			break;
-		case DIG:
-			this->path = DIG_PATH;
-			break;
-		case WORM:
-			this->path = WORM_PATH;
-			break;
-		case ROCK:
-			this->path = ROCK_PATH;
-			break;
-		default:
-			this->path = DEFAULT_PATH;
-			break;
-		}
-	}
+	TileComponent() : tile({ 0,0,0,0 }), id(7), tilesSheet(NULL) 
+	{}
+
+	TileComponent(int x, int y, int w, int h, int id, SDL_Texture *tex, bool rigidity) : tile({x,y,w,h}), id(id), tilesSheet(tex), rigid(rigidity) {}
 
 	void init() override
 	{
+		initial_position.x = tile.x;
+		initial_position.y = tile.y;
 		entity->addComponent<TransformComponent>((float)tile.x, (float)tile.y, tile.w, tile.h, 1);
 		transform = &entity->getComponent<TransformComponent>();
-
-		entity->addComponent<SpriteComponent>(path.c_str());
-		sprite = &entity->getComponent<SpriteComponent>();
 	}
 
+	void draw() override
+	{
+		SDL_Rect src = {id * TILES_W, (id / TEX_BY_ROW) * TILES_H, TILES_W, TILES_H};
+		TextureManager::Draw(this->tilesSheet, src, this->tile, 0, SDL_FLIP_NONE);
+	}
+
+	void update() override
+	{
+		tile.x = initial_position.x - Game::camera.x;
+		tile.y = initial_position.y - Game::camera.y;
+	}
 	SDL_Rect getTile()
 	{
 		return this->tile;
 	}
+
+	SDL_Texture* getTex() const
+	{
+		return (this->tilesSheet);
+	}
+
+	bool isRigid()
+	{
+		return rigid;
+	}
+
+	int getId() const
+	{
+		return this->id;
+	}
 };
+#endif

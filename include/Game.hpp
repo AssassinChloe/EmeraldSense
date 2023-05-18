@@ -6,6 +6,8 @@
 #include "Map.hpp"
 #include "TextureManager.hpp"
 #include <vector>
+#include "Const.hpp"
+#include "Vector2D.hpp"
 
 class ColliderComponent;
 class Map;
@@ -25,15 +27,17 @@ public:
 
 	bool running();
 
-	static void addTile(int id, int x, int y);
+	static void addTile(int id, int x, int y, SDL_Texture *tex);
 	static SDL_Renderer *renderer;
 	static SDL_Event event;
-	static std::vector<ColliderComponent*>colliders;
+	static SDL_Rect camera;
 
 private:
 	bool isRunning;
 	SDL_Window* window;
 	Map *map;
-
+	int left, right, up, down, dig;
+	int timer = 0;
 	void buildPlayer();
+	void checkNear(Vector2D playerPos);
 };

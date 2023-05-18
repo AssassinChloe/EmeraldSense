@@ -157,7 +157,6 @@
     <ClInclude Include="include\ECS\TransformComponent.hpp" />
     <ClInclude Include="include\TextureManager.hpp" />
     <ClInclude Include="include\Vector2D.hpp" />
-    <ClInclude Include="include\ECS\KeyboardController.hpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include=".gitignore" />
@@ -176,6 +175,7 @@
     <Image Include="assets\textures\rock.png" />
     <Image Include="assets\textures\wall.png" />
     <Image Include="assets\textures\water.png" />
+    <Image Include="assets\tiles_sheet.png" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="assets\map.txt" />

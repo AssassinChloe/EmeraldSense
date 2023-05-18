@@ -62,9 +62,6 @@
     <ClInclude Include="include\Vector2D.hpp">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
-    <ClInclude Include="include\ECS\KeyboardController.hpp">
-      <Filter>Fichiers d%27en-tête</Filter>
-    </ClInclude>
     <ClInclude Include="include\ECS\ColliderComponent.hpp">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
@@ -118,6 +115,9 @@
       <Filter>Fichiers de ressources</Filter>
     </Image>
     <Image Include="assets\rat_taupe_sheet.png">
+      <Filter>Fichiers de ressources</Filter>
+    </Image>
+    <Image Include="assets\tiles_sheet.png">
       <Filter>Fichiers de ressources</Filter>
     </Image>
   </ItemGroup>
