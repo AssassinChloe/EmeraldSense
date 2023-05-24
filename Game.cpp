@@ -57,8 +57,7 @@ void Game::init(const char* title, int xpos, int ypos, int width, int height, bo
 		else
 		{
 			this->map = new Map();
-			this->map->loadMap(MAP_PATH, MAP_WIDTH, MAP_HEIGHT);
-			return;
+			this->map->loadMap(MAP_PATH, MAP_WIDTH);
 			buildPlayer();
 		}
 	}

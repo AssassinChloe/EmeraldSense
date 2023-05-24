@@ -13,7 +13,7 @@ public:
 	Map();
 	~Map();
 
-	void loadMap(std::string path, int sizeX, int sizeY);
+	void loadMap(std::string path, int sizeX);
 	SDL_Texture* getTex() const;
 	std::vector<int>& getMap();
 

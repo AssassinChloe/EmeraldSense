@@ -9,25 +9,32 @@ Map::~Map() {
 		SDL_DestroyTexture(this->tiles_sheet);
 }
 
-void Map::loadMap(std::string path, int sizeX, int sizeY)
+void Map::loadMap(std::string path, int sizeX)
 {
-	char tile;
+	std::string tiles_str = "";
+	std::string tmp = "";
 	std::ifstream mapFile;
 	mapFile.open(path);
-	std::cout << sizeY << " et " << sizeX << std::endl;
-	for (int y = 0; y < sizeY; y++)
+	if (!mapFile.is_open())
 	{
-		for (int x = 0; x < sizeX; x++)
-		{
-			mapFile.get(tile);
-			//Game::addTile(tile_int,  x * TILES_W, y * TILES_H, this->tiles_sheet);
-			//this->map.push_back(tile_int);
-			std::cout << tile;
-		}
-		mapFile.ignore();
-		std::cout << std::endl;
+		std::cout << "Error opening Map" << std::endl;
+	}
+	while (getline(mapFile, tmp))
+	{
+		if (!tmp.empty() && static_cast<int>(tmp.size()) > sizeX)
+			tmp.resize(sizeX);
+		tiles_str += tmp;
+
 	}
 	mapFile.close();
+	int i = 0;
+
+	for (char c : tiles_str)
+	{
+			Game::addTile((c - '0'),  i % sizeX * TILES_W, i / sizeX * TILES_H, this->tiles_sheet);		
+			i++;
+	}
+	std::cout << std::endl;
 	std::cout << "Map Loaded" << std::endl;
 }
 
