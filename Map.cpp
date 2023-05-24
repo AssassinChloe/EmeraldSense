@@ -14,18 +14,18 @@ void Map::loadMap(std::string path, int sizeX, int sizeY)
 	char tile;
 	std::ifstream mapFile;
 	mapFile.open(path);
-	
+	std::cout << sizeY << " et " << sizeX << std::endl;
 	for (int y = 0; y < sizeY; y++)
 	{
 		for (int x = 0; x < sizeX; x++)
 		{
 			mapFile.get(tile);
-			int tile_int = atoi(&tile);
-			Game::addTile(tile_int,  x * TILES_W, y * TILES_H, this->tiles_sheet);
-			this->map.push_back(tile_int);
-			//mapFile.ignore();
+			//Game::addTile(tile_int,  x * TILES_W, y * TILES_H, this->tiles_sheet);
+			//this->map.push_back(tile_int);
+			std::cout << tile;
 		}
 		mapFile.ignore();
+		std::cout << std::endl;
 	}
 	mapFile.close();
 	std::cout << "Map Loaded" << std::endl;

@@ -58,6 +58,7 @@ void Game::init(const char* title, int xpos, int ypos, int width, int height, bo
 		{
 			this->map = new Map();
 			this->map->loadMap(MAP_PATH, MAP_WIDTH, MAP_HEIGHT);
+			return;
 			buildPlayer();
 		}
 	}
@@ -152,9 +153,9 @@ void Game::checkNear(Vector2D playerPos)
 
 			}
 			//COLLISION
-			if (dir.x < 0 && tilesV[(y)*MAP_WIDTH + x - 1]->hasComponent<ColliderComponent>() || dir.x > 0 && tilesV[(y)*MAP_WIDTH + x + 1]->hasComponent<ColliderComponent>())
+			if ((dir.x < 0 && tilesV[(y)*MAP_WIDTH + x - 1]->hasComponent<ColliderComponent>()) || (dir.x > 0 && tilesV[(y)*MAP_WIDTH + x + 1]->hasComponent<ColliderComponent>()))
 				dir.x = 0;
-			if (dir.y < 0 && tilesV[(y - 1) * MAP_WIDTH + x]->hasComponent<ColliderComponent>() || dir.y > 0 && tilesV[(y + 1) * MAP_WIDTH + x]->hasComponent<ColliderComponent>())
+			if ((dir.y < 0 && tilesV[(y - 1) * MAP_WIDTH + x]->hasComponent<ColliderComponent>()) || (dir.y > 0 && tilesV[(y + 1) * MAP_WIDTH + x]->hasComponent<ColliderComponent>()))
 				dir.y = 0;
 			player.getComponent<TransformComponent>().setVelocity(dir);
 		}
@@ -165,7 +166,7 @@ void Game::checkNear(Vector2D playerPos)
 
 void Game::update()
 {
-	SDL_Rect playerCol = player.getComponent<ColliderComponent>().getCollider();
+	//SDL_Rect playerCol = player.getComponent<ColliderComponent>().getCollider();
 	Vector2D playerPos = player.getComponent<TransformComponent>().getPosition();
 
 
@@ -197,10 +198,6 @@ void Game::render()
 	{
 		p->draw();
 	}
-	//for (auto& e : enemies)
-	//{
-	//	e->draw();
-	//}
 	SDL_RenderPresent(this->renderer);
 }
 void Game::clean()
@@ -211,9 +208,9 @@ void Game::clean()
 		t->destroy();
 	}
 	manager.refresh();
+	delete(this->map);
 	SDL_DestroyWindow(this->window);
 	SDL_DestroyRenderer(this->renderer);
-	delete(this->map);
 	SDL_Quit();
 	std::cout << "Game cleaned" << std::endl;
 }

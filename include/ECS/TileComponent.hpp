@@ -8,9 +8,9 @@ class TileComponent : public Component
 {
 private:
 	TransformComponent *transform = NULL;
-	SDL_Rect tile;
+	SDL_Rect tile = {0,0,0,0};
 	Vector2D initial_position;
-	int id;
+	int id = 0;
 	bool rigid = false;
 	SDL_Texture* tilesSheet = NULL;
 
@@ -18,7 +18,7 @@ public:
 	TileComponent() : tile({ 0,0,0,0 }), id(7), tilesSheet(NULL) 
 	{}
 
-	TileComponent(int x, int y, int w, int h, int id, SDL_Texture *tex, bool rigidity) : tile({x,y,w,h}), id(id), tilesSheet(tex), rigid(rigidity) {}
+	TileComponent(int x, int y, int w, int h, int id, SDL_Texture *tex, bool rigidity) : tile({x,y,w,h}), id(id), rigid(rigidity), tilesSheet(tex) {}
 
 	void init() override
 	{

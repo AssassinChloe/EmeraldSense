@@ -16,7 +16,8 @@ private:
 	TransformComponent *transform = NULL;
 	SDL_Texture* texture = NULL;
 	int textureSize = 32;
-	SDL_Rect src, dst;
+	SDL_Rect src = {0,0,0,0};
+	SDL_Rect dst = {0,0,0,0};
 
 	bool animated = false;
 	Animation animation = {0, 1, 100};
@@ -26,16 +27,17 @@ private:
 
 public:
 
-	SpriteComponent(): src({0,0,0,0}), dst({0,0,0,0}) {}
+	SpriteComponent() {}
+	SpriteComponent(SDL_Texture * tex) : texture(tex) {}
 
-	SpriteComponent(const char* path) : src({ 0,0,0,0 }), dst({ 0,0,0,0 })
+	SpriteComponent(const char* path)
 	{
 		setTexture(path);
 	}
-	SpriteComponent(SDL_Texture * tex) : src({ 0,0,0,0 }), dst({ 0,0,0,0 }), texture(tex)
-	{}
+	
+
 	SpriteComponent(const char* path, int size, bool animation)
-	: transform(NULL), texture(NULL), src({ 0,0,0,0 }), dst({ 0,0,0,0 }), animated(animation), textureSize(size)
+	: transform(NULL), texture(NULL), textureSize(size), animated(animation)
 	{
 		setTexture(path);
 	}

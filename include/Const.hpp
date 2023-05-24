@@ -48,7 +48,7 @@
 #define MAP_HEIGHT 100
 
 // WINDOW DEFINITION
-#define WIN_H 640
+#define WIN_H 440
 #define WIN_W 800
 
 // ANIMATION DEFINITION
